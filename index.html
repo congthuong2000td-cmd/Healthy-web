@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthTrack - Your Health Dashboard</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Floating Toast Message (Error / Success) -->
+    <div id="floatingToast" class="floating-toast" role="alert">
+        <i class="fa-solid fa-circle-exclamation me-2 fs-5" id="toastIcon"></i>
+        <span id="toastText">Error occurred!</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="header sticky-top py-2 shadow-sm">
+        <div class="container d-flex justify-content-between align-items-center">
+            
+            <!-- Logo -->
+            <div class="logo-container d-flex align-items-center" style="cursor: pointer;" onclick="navigateToPage('home')">
+                <div class="logo-icon bg-primary text-white me-2">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                </div>
+                <h1 class="logo-text m-0 text-dark fw-bold fs-4 d-none d-sm-block" data-translate="app_title">HealthTrack</h1>
+            </div>
+
+            <!-- SPA Nav Pills -->
+            <nav class="nav nav-pills d-flex align-items-center">
+                <a class="nav-link active" href="#home" onclick="event.preventDefault(); navigateToPage('home');" data-translate="nav_home">Home</a>
+                <a class="nav-link" href="#calculator" onclick="event.preventDefault(); navigateToPage('calculator');" data-translate="nav_calc">BMI Calculator</a>
+                <a class="nav-link" href="#tracker" onclick="event.preventDefault(); navigateToPage('tracker');" data-translate="nav_tracker">Daily Tracker</a>
+            </nav>
+
+            <!-- Settings / Utilities Toggle -->
+            <div class="d-flex align-items-center gap-2">
+                <!-- Theme Switcher Button -->
+                <button class="btn-control" id="themeToggle" title="Toggle dark mode">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+
+                <!-- Language Toggle Button -->
+                <button class="btn-control px-2" id="langToggle" title="Toggle language" style="width: auto; border-radius: 20px;">
+                    VN
+                </button>
+
+                <!-- Profile Badge -->
+                <div class="profile-badge" title="User Profile">
+                    JD
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- ============================================== -->
+    <!-- 1. HOME SCREEN PAGE -->
+    <!-- ============================================== -->
+    <section id="homePage" class="spa-page">
+        <!-- Hero Section -->
+        <div class="hero-banner text-white text-center py-5 mb-5">
+            <div class="container py-5 px-4">
+                <div class="bg-white bg-opacity-10 d-inline-flex p-3 rounded-4 mb-4 text-white shadow-sm" style="backdrop-filter: blur(10px);">
+                    <i class="fa-solid fa-heart fs-3"></i>
+                </div>
+                <h2 class="fw-extrabold display-4 mb-3" data-translate="hero_title">Track Your Health Smarter</h2>
+                <p class="fs-5 opacity-75 mx-auto mb-4" style="max-width: 600px;" data-translate="hero_subtitle">Calculate BMI, TDEE and build healthy habits with our comprehensive health dashboard</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <button class="btn btn-light rounded-pill px-4 py-3 fw-bold text-primary shadow-sm" onclick="navigateToPage('calculator')" data-translate="btn_get_started">Get Started</button>
+                    <button class="btn btn-outline-light rounded-pill px-4 py-3 fw-bold" onclick="navigateToPage('tracker')" data-translate="btn_track_daily">Track Daily</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features - Why Choose Us -->
+        <div class="container my-5">
+            <h3 class="fw-bold text-center mb-5" data-translate="why_choose_title">Why Choose HealthTrack?</h3>
+            <div class="row g-4">
+                
+                <!-- Feature Card 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 p-4 border-0 feature-card text-center text-sm-start">
+                        <div class="feature-icon-box mx-auto mx-sm-0">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2" data-translate="feature1_title">Track Progress</h5>
+                        <p class="text-muted small m-0" data-translate="feature1_desc">Monitor your health metrics over time and achieve consistency.</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 p-4 border-0 feature-card text-center text-sm-start">
+                        <div class="feature-icon-box mx-auto mx-sm-0">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2" data-translate="feature2_title">Personalized Plans</h5>
+                        <p class="text-muted small m-0" data-translate="feature2_desc">Get custom meal plans based on your direct physical goals.</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 p-4 border-0 feature-card text-center text-sm-start">
+                        <div class="feature-icon-box mx-auto mx-sm-0">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2" data-translate="feature3_title">Science-Based</h5>
+                        <p class="text-muted small m-0" data-translate="feature3_desc">Calculations and suggestions backed by standard medical formulas.</p>
+                    </div>
+                </div>
+
+                <!-- Feature Card 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="card h-100 p-4 border-0 feature-card text-center text-sm-start">
+                        <div class="feature-icon-box mx-auto mx-sm-0">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        </div>
+                        <h5 class="fw-bold mb-2" data-translate="feature4_title">Easy to Use</h5>
+                        <p class="text-muted small m-0" data-translate="feature4_desc">Simple, intuitive and fast interface designed for everyone.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="container my-5 pt-3">
+            <div class="cta-banner text-white p-5 text-center">
+                <h3 class="fw-bold display-6 mb-3" data-translate="cta_title">Start Your Health Journey Today</h3>
+                <p class="opacity-75 fs-5 mx-auto mb-4" style="max-width: 650px;" data-translate="cta_desc">Join thousands of users who are already tracking their health metrics and achieving their dream bodies.</p>
+                <button class="btn btn-light rounded-pill px-4 py-3 fw-bold text-primary shadow-sm" onclick="navigateToPage('calculator')" data-translate="cta_btn">Calculate Your BMI Now</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 2. BMI CALCULATOR SCREEN PAGE -->
+    <!-- ============================================== -->
+    <section id="calculatorPage" class="spa-page d-none">
+        
+        <!-- Subtle Calculator Top Header Banner -->
+        <div class="hero-banner text-white text-center py-4 mb-5" style="height: 140px;">
+            <div class="container py-2">
+                <h2 class="fw-bold" data-translate="calc_header_title">Health Calculator</h2>
+                <p class="opacity-75 small" data-translate="calc_header_subtitle">Know your standard BMI, BMR, and customize your diet plan</p>
+            </div>
+        </div>
+
+        <div class="container my-4" style="margin-top: -60px !important; position: relative; z-index: 10;">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    
+                    <!-- Calculator Card -->
+                    <div class="card shadow-lg border-0 mb-5">
+                        <div class="card-body p-4 p-md-5">
+                            
+                            <div class="d-flex align-items-center mb-4 pb-3 border-bottom">
+                                <div class="logo-icon bg-primary text-white me-3" style="width: 46px; height: 46px; font-size: 1.3rem;">
+                                    <i class="fa-solid fa-calculator"></i>
+                                </div>
+                                <h3 class="fw-bold text-dark m-0 fs-4" data-translate="calc_card_title">Health Calculator</h3>
+                            </div>
+
+                            <form id="healthForm" novalidate>
+                                <div class="row g-4">
+                                    
+                                    <!-- Full Name -->
+                                    <div class="col-md-12">
+                                        <label for="fullName" class="form-label" data-translate="label_name">Full Name</label>
+                                        <input type="text" class="form-control custom-input" id="fullName" placeholder="Enter your name" required>
+                                        <div class="error-message" id="errName">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span data-translate="err_name">Please enter your name</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Gender -->
+                                    <div class="col-md-6">
+                                        <label for="gender" class="form-label" data-translate="label_gender">Gender</label>
+                                        <select class="form-select custom-input" id="gender">
+                                            <option value="male" data-translate="gender_male">Male</option>
+                                            <option value="female" data-translate="gender_female">Female</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Age -->
+                                    <div class="col-md-6">
+                                        <label for="age" class="form-label" data-translate="label_age">Age</label>
+                                        <input type="number" class="form-control custom-input" id="age" placeholder="Enter your age" required min="1">
+                                        <div class="error-message" id="errAge">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span data-translate="err_age">Age must be greater than 0</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Height -->
+                                    <div class="col-md-6">
+                                        <label for="height" class="form-label" data-translate="label_height">Height (cm)</label>
+                                        <input type="number" class="form-control custom-input" id="height" placeholder="Enter your height" required min="1">
+                                        <div class="error-message" id="errHeight">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span data-translate="err_height">Invalid height</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Weight -->
+                                    <div class="col-md-6">
+                                        <label for="weight" class="form-label" data-translate="label_weight">Weight (kg)</label>
+                                        <input type="number" class="form-control custom-input" id="weight" placeholder="Enter your weight" required min="1">
+                                        <div class="error-message" id="errWeight">
+                                            <i class="fa-solid fa-circle-exclamation"></i>
+                                            <span data-translate="err_weight">Please enter your weight</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Activity level -->
+                                    <div class="col-md-12">
+                                        <label for="activity" class="form-label" data-translate="label_activity">Activity Level</label>
+                                        <select class="form-select custom-input" id="activity">
+                                            <option value="1.2" data-translate="activity_sed">Sedentary (little to no exercise)</option>
+                                            <option value="1.375" data-translate="activity_light">Lightly active (1-3 days/week)</option>
+                                            <option value="1.55" selected data-translate="activity_mod">Moderate (exercise 3-5 days/week)</option>
+                                            <option value="1.725" data-translate="activity_very">Very active (6-7 days/week)</option>
+                                            <option value="1.9" data-translate="activity_super">Super active (very hard exercise/job)</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <div class="col-12 mt-5">
+                                        <button type="submit" class="btn btn-primary w-100 py-3 fw-bold fs-5 btn-calculate" data-translate="btn_calc">Calculate Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                        </div>
+                    </div>
+
+                    <!-- Results Section (Initially Hidden) -->
+                    <div id="resultsSection" class="d-none">
+                        <h3 class="fw-bold text-dark mb-4 text-center text-sm-start" data-translate="results_title">Your Results</h3>
+                        
+                        <!-- Top results values -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="card result-card bg-blue-light border-0 h-100 p-4 text-center">
+                                    <h5 class="text-secondary fw-semibold mb-2" data-translate="bmi_card_title">BMI</h5>
+                                    <div class="display-4 fw-bold text-primary mb-2" id="bmiValue">0.0</div>
+                                    <div class="badge bg-success fs-6 rounded-pill px-3 py-2" id="bmiStatus" data-translate="status_normal">Normal</div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card result-card bg-blue-light border-0 h-100 p-4 text-center">
+                                    <h5 class="text-secondary fw-semibold mb-2" data-translate="bmr_card_title">BMR</h5>
+                                    <div class="display-4 fw-bold text-primary mb-2" id="bmrValue">0</div>
+                                    <div class="text-secondary fw-medium" data-translate="unit_cal_day">calories/day</div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card result-card bg-green-light border-0 p-4 text-center">
+                                    <h5 class="text-secondary fw-semibold mb-2" data-translate="tdee_card_title">TDEE (Total Daily Energy Expenditure)</h5>
+                                    <div class="display-3 fw-bold text-success mb-2" id="tdeeValue">0</div>
+                                    <div class="text-secondary fw-medium" data-translate="unit_cal_day">calories/day</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- BMI scale indicator -->
+                        <div class="card border-0 shadow-sm p-4 mb-4 rounded-4">
+                            <h5 class="fw-semibold mb-4" data-translate="scale_title">BMI Classification</h5>
+                            <div class="bmi-scale-container">
+                                <div class="bmi-gradient"></div>
+                                <div class="bmi-pointer position-absolute" id="bmiPointer">
+                                    <i class="fa-solid fa-caret-down fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between text-muted small fw-semibold px-2 mt-2">
+                                <span>0</span>
+                                <span>18.5</span>
+                                <span>25</span>
+                                <span>30</span>
+                                <span>40+</span>
+                            </div>
+                            <div class="d-flex justify-content-between small mt-1 px-3 fw-bold">
+                                <span class="text-info" data-translate="status_under">Under</span>
+                                <span class="text-success" data-translate="status_normal">Normal</span>
+                                <span class="text-warning" data-translate="status_over">Over</span>
+                                <span class="text-danger" data-translate="status_obese">Obese</span>
+                            </div>
+                        </div>
+
+                        <!-- Secondary stats -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <div class="card bg-blue-light border-0 p-4 d-flex flex-row align-items-center shadow-sm rounded-4">
+                                    <div class="logo-icon bg-white text-primary me-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                        <i class="fa-solid fa-droplet"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-secondary fw-semibold mb-1" data-translate="stat_water_title">Daily Water Intake</h6>
+                                        <h4 class="fw-bold text-primary m-0" id="waterIntake">0 ml/day</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card bg-blue-light border-0 p-4 d-flex flex-row align-items-center shadow-sm rounded-4">
+                                    <div class="logo-icon bg-white text-primary me-3 shadow-sm" style="width: 48px; height: 48px; font-size: 1.4rem;">
+                                        <i class="fa-solid fa-gauge-high"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="text-secondary fw-semibold mb-1" data-translate="stat_cal_title">Recommended Calories</h6>
+                                        <h4 class="fw-bold text-primary m-0" id="recCalories">0 cal/day</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Meal Plan -->
+                        <div class="card border-0 shadow-sm p-4 rounded-4 mb-5">
+                            <h4 class="fw-bold mb-1" data-translate="meal_plan_title">Balanced Meal Plan</h4>
+                            <p class="text-muted mb-4" data-translate="meal_plan_subtitle">Maintain your healthy weight</p>
+                            
+                            <div class="badge border border-primary text-primary bg-white fs-6 py-2 px-3 mb-4 d-inline-block text-start w-auto mx-auto" style="border-radius: 8px;">
+                                <span data-translate="target_cal_prefix">Target Daily Calories:</span> <span id="targetCaloriesMeal">0</span> cal
+                            </div>
+
+                            <div class="meal-list">
+                                <!-- Breakfast -->
+                                <div class="meal-item d-flex justify-content-between align-items-center p-3 border rounded-3 mb-3">
+                                    <div>
+                                        <h6 class="fw-bold mb-1" data-translate="meal_breakfast">Breakfast</h6>
+                                        <p class="text-muted small m-0" data-translate="meal_breakfast_desc">Greek yogurt, berries, granola</p>
+                                    </div>
+                                    <div class="badge bg-primary fs-6 rounded-pill px-3 py-2" id="calBreakfast">0 cal</div>
+                                </div>
+                                
+                                <!-- Lunch -->
+                                <div class="meal-item d-flex justify-content-between align-items-center p-3 border rounded-3 mb-3">
+                                    <div>
+                                        <h6 class="fw-bold mb-1" data-translate="meal_lunch">Lunch</h6>
+                                        <p class="text-muted small m-0" data-translate="meal_lunch_desc">Quinoa bowl, grilled vegetables, chickpeas</p>
+                                    </div>
+                                    <div class="badge bg-primary fs-6 rounded-pill px-3 py-2" id="calLunch">0 cal</div>
+                                </div>
+
+                                <!-- Dinner -->
+                                <div class="meal-item d-flex justify-content-between align-items-center p-3 border rounded-3 mb-3">
+                                    <div>
+                                        <h6 class="fw-bold mb-1" data-translate="meal_dinner">Dinner</h6>
+                                        <p class="text-muted small m-0" data-translate="meal_dinner_desc">Lean protein, mixed greens, whole grains</p>
+                                    </div>
+                                    <div class="badge bg-primary fs-6 rounded-pill px-3 py-2" id="calDinner">0 cal</div>
+                                </div>
+
+                                <!-- Snacks -->
+                                <div class="meal-item d-flex justify-content-between align-items-center p-3 border rounded-3">
+                                    <div>
+                                        <h6 class="fw-bold mb-1" data-translate="meal_snack">Snacks</h6>
+                                        <p class="text-muted small m-0" data-translate="meal_snack_desc">Fruits, nuts, veggies with hummus</p>
+                                    </div>
+                                    <div class="badge bg-primary fs-6 rounded-pill px-3 py-2" id="calSnack">0 cal</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- 3. DAILY TRACKER SCREEN PAGE -->
+    <!-- ============================================== -->
+    <section id="trackerPage" class="spa-page d-none">
+        
+        <!-- Tracker Top Banner -->
+        <div class="hero-banner text-white text-center py-4 mb-4" style="height: 140px;">
+            <div class="container py-2">
+                <h2 class="fw-bold" data-translate="tracker_header_title">Daily Health Tracker</h2>
+                <p class="opacity-75 small" data-translate="tracker_header_subtitle">Log your daily food intake and water consumption dynamically</p>
+            </div>
+        </div>
+
+        <div class="container my-4" style="margin-top: -65px !important; position: relative; z-index: 10;">
+            
+            <!-- Top Summary Grid Indicators -->
+            <div class="row g-3 mb-5">
+                
+                <!-- Card 1: Total Calories logged -->
+                <div class="col-6 col-lg-3">
+                    <div class="card border-0 shadow-sm tracker-summary-card">
+                        <div class="tracker-summary-icon">
+                            <i class="fa-solid fa-fire"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block fw-semibold" data-translate="indicator_total_cal">Total Calories</span>
+                            <span class="fw-bold fs-5 text-dark" id="summaryTotalCalories">0 / 2000 cal</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Calories Remaining -->
+                <div class="col-6 col-lg-3">
+                    <div class="card border-0 shadow-sm tracker-summary-card">
+                        <div class="tracker-summary-icon" style="color: var(--success-color); background-color: var(--bg-green-light);">
+                            <i class="fa-solid fa-circle-chevron-down"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block fw-semibold" data-translate="indicator_remain_cal">Remaining</span>
+                            <span class="fw-bold fs-5 text-dark" id="summaryRemainingCalories">2000 cal left</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Water Logged -->
+                <div class="col-6 col-lg-3">
+                    <div class="card border-0 shadow-sm tracker-summary-card">
+                        <div class="tracker-summary-icon" style="color: var(--info-color); background-color: #ecfeff;">
+                            <i class="fa-solid fa-glass-water"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block fw-semibold" data-translate="indicator_water">Water Intake</span>
+                            <span class="fw-bold fs-5 text-dark" id="summaryWaterIntake">0 / 2000 ml</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: BMI Status -->
+                <div class="col-6 col-lg-3">
+                    <div class="card border-0 shadow-sm tracker-summary-card">
+                        <div class="tracker-summary-icon" style="color: var(--warning-color); background-color: #fffbeb;">
+                            <i class="fa-solid fa-heart-pulse"></i>
+                        </div>
+                        <div>
+                            <span class="text-muted small d-block fw-semibold" data-translate="indicator_bmi">BMI Status</span>
+                            <span class="fw-bold fs-5 text-dark" id="summaryBmiStatus">Normal (22.5)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Main Interactive Trackers Columns -->
+            <div class="row g-4">
+                
+                <!-- Left Column: Circular Water Progress tracker -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100 p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="logo-icon bg-primary text-white me-3" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                                <i class="fa-solid fa-droplet"></i>
+                            </div>
+                            <h4 class="card-title m-0" data-translate="card_water_title">Water Intake</h4>
+                        </div>
+
+                        <!-- Progress Circle Container -->
+                        <div class="circular-progress-container">
+                            <svg class="circular-progress-svg">
+                                <circle class="progress-bg" cx="110" cy="110" r="98"></circle>
+                                <circle class="progress-bar-fill" id="waterProgressRing" cx="110" cy="110" r="98"></circle>
+                            </svg>
+                            <div class="progress-center-text">
+                                <div class="display-5 fw-extrabold text-primary mb-1" id="waterCircleValue">0</div>
+                                <div class="text-muted small fw-semibold" id="waterCircleGoal">/ 2000 ml</div>
+                                <div class="text-muted fs-6 fw-bold mt-1" id="waterCirclePercent">0%</div>
+                            </div>
+                        </div>
+
+                        <!-- Control Buttons -->
+                        <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-2">
+                            <button class="btn-control fs-4 shadow-sm" id="btnWaterDec" title="Decrease 250ml">-</button>
+                            <button class="btn btn-secondary-custom shadow-sm py-2 px-3" id="btnWaterInc250" data-translate="btn_water_250">+250ml</button>
+                            <button class="btn btn-primary shadow-sm py-2 px-3" id="btnWaterInc500" data-translate="btn_water_500">+500ml</button>
+                            <button class="btn btn-danger-light shadow-sm py-2 px-3" id="btnWaterReset" data-translate="btn_reset">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Food tracker with Log Form & Log List History -->
+                <div class="col-lg-6">
+                    <div class="card border-0 shadow-sm h-100 p-4">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="logo-icon bg-primary text-white me-3" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <h4 class="card-title m-0" data-translate="card_food_title">Food Calories</h4>
+                        </div>
+
+                        <!-- Form logging -->
+                        <form id="foodForm" class="mb-4" novalidate>
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <input type="text" class="form-control custom-input" id="foodName" placeholder="Meal name (e.g. Chicken Salad)" required>
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control custom-input" id="foodCalories" placeholder="Calories" required min="1">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control custom-input" id="foodProtein" placeholder="Protein (g)" min="0">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control custom-input" id="foodCarbs" placeholder="Carbs (g)" min="0">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control custom-input" id="foodFat" placeholder="Fat (g)" min="0">
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" id="btnAddMeal">
+                                        <i class="fa-solid fa-plus me-2"></i><span data-translate="btn_add_meal">Add Meal</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <hr class="opacity-10 my-4">
+
+                        <!-- Meal List History -->
+                        <div id="mealListContainer" style="max-height: 240px; overflow-y: auto;">
+                            <!-- Empty State -->
+                            <div id="mealEmptyState" class="text-center py-5 text-muted opacity-75">
+                                <i class="fa-solid fa-utensils fs-1 mb-3 text-secondary"></i>
+                                <h6 class="fw-bold mb-1" data-translate="empty_meal_title">No meals added yet</h6>
+                                <p class="small m-0" data-translate="empty_meal_desc">Start tracking your food intake</p>
+                            </div>
+
+                            <!-- List items (injected dynamically via JS) -->
+                            <div id="mealList"></div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Bootstrap Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom SPA & Logic JS -->
+    <script src="script.js"></script>
+</body>
+</html>
