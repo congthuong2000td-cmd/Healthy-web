@@ -43,25 +43,6 @@
     --bg-red-light: #3b1818;
 }
 
-[data-theme="dark"] .text-dark {
-    color: #f8fafc !important;
-}
-
-[data-theme="dark"] .text-secondary,
-[data-theme="dark"] .text-muted,
-[data-theme="dark"] .text-body-secondary {
-    color: #94a3b8 !important;
-}
-
-[data-theme="dark"] .bg-white {
-    background-color: #172134 !important;
-    color: var(--text-color);
-}
-
-[data-theme="dark"] .badge.bg-white {
-    background-color: #0f172a !important;
-}
-
 /* Global Reset & Base Styling */
 * {
     box-sizing: border-box;
