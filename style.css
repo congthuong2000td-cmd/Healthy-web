@@ -43,6 +43,17 @@
     --bg-red-light: #3b1818;
 }
 
+html[data-theme="dark"] .text-dark {
+    color: var(--text-color) !important;
+}
+
+html[data-theme="dark"] .text-muted,
+html[data-theme="dark"] .text-secondary,
+html[data-theme="dark"] .small,
+html[data-theme="dark"] .opacity-75 {
+    color: #cbd5e1 !important;
+}
+
 /* Global Reset & Base Styling */
 * {
     box-sizing: border-box;
