@@ -253,27 +253,51 @@ const translations = {
 // Application Global State
 let currentLang = localStorage.getItem('language') || 'en';
 let currentTheme = localStorage.getItem('theme') || 'light';
+const pageTemplates = {
+    home: 'home.html',
+    calculator: 'calculator.html',
+    tracker: 'tracker.html'
+};
+let currentPage = null;
 
 // ==========================================
 // 2. Client SPA Router
 // ==========================================
-function navigateToPage(pageId) {
-    // Validate page ID
-    const validPages = ['home', 'calculator', 'tracker'];
-    if (!validPages.includes(pageId)) pageId = 'home';
+async function loadPage(pageId) {
+    if (!pageTemplates[pageId]) pageId = 'home';
+    const container = $('#pageContainer');
 
-    // Update active state in nav links
+    if ($(`#${pageId}Page`).length === 0) {
+        try {
+            const response = await fetch(pageTemplates[pageId]);
+            if (!response.ok) throw new Error(`Failed to load page: ${pageId}`);
+            const html = await response.text();
+            container.append(html);
+        } catch (error) {
+            console.error(error);
+            container.html(`<div class="container py-5"><p>Unable to load page content.</p></div>`);
+            return;
+        }
+    }
+
     $('.nav-pills .nav-link').removeClass('active');
     $(`.nav-pills a[href="#${pageId}"]`).addClass('active');
 
-    // Show/Hide SPA pages with fade effect
     $('.spa-page').addClass('d-none');
     $(`#${pageId}Page`).hide().removeClass('d-none').fadeIn(350);
 
-    // Update URL hash
-    window.location.hash = pageId;
+    currentPage = pageId;
+    updateLanguageUI();
+    renderWaterIntake();
+    renderMealsList();
+}
 
-    // Scroll to top of window
+async function navigateToPage(pageId) {
+    const validPages = ['home', 'calculator', 'tracker'];
+    if (!validPages.includes(pageId)) pageId = 'home';
+
+    await loadPage(pageId);
+    window.location.hash = pageId;
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -700,7 +724,7 @@ $(document).ready(function() {
     });
 
     // BMI Calculator Form Submission
-    $('#healthForm').on('submit', function(e) {
+    $(document).on('submit', '#healthForm', function(e) {
         e.preventDefault();
         
         if (validateForm()) {
@@ -711,7 +735,7 @@ $(document).ready(function() {
     });
 
     // Remove red highlight classes immediately on manual typing/fix
-    $('.custom-input').on('input change', function() {
+    $(document).on('input change', '.custom-input', function() {
         if ($(this).val() !== '') {
             $(this).removeClass('is-invalid');
             $(this).next('.error-message').hide();
@@ -719,24 +743,24 @@ $(document).ready(function() {
     });
 
     // Interactive Water buttons Click Events
-    $('#btnWaterDec').on('click', function() {
+    $(document).on('click', '#btnWaterDec', function() {
         addWater(-250);
     });
 
-    $('#btnWaterInc250').on('click', function() {
+    $(document).on('click', '#btnWaterInc250', function() {
         addWater(250);
     });
 
-    $('#btnWaterInc500').on('click', function() {
+    $(document).on('click', '#btnWaterInc500', function() {
         addWater(500);
     });
 
-    $('#btnWaterReset').on('click', function() {
+    $(document).on('click', '#btnWaterReset', function() {
         resetWater();
     });
 
     // Food Calories form Submission
-    $('#foodForm').on('submit', function(e) {
+    $(document).on('submit', '#foodForm', function(e) {
         e.preventDefault();
         
         const nameInput = $('#foodName');
