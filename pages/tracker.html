@@ -1,0 +1,131 @@
+<!-- Tracker Page Content -->
+<section id="trackerPage" class="spa-page d-none">
+    <div class="hero-banner text-white text-center py-4 mb-4" style="height: 140px;">
+        <div class="container py-2">
+            <h2 class="fw-bold" data-translate="tracker_header_title">Daily Health Tracker</h2>
+            <p class="opacity-75 small" data-translate="tracker_header_subtitle">Log your daily food intake and water consumption dynamically</p>
+        </div>
+    </div>
+
+    <div class="container my-4" style="margin-top: -65px !important; position: relative; z-index: 10;">
+        <div class="row g-3 mb-5">
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm tracker-summary-card">
+                    <div class="tracker-summary-icon">
+                        <i class="fa-solid fa-fire"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted small d-block fw-semibold" data-translate="indicator_total_cal">Total Calories</span>
+                        <span class="fw-bold fs-5 text-dark" id="summaryTotalCalories">0 / 2000 cal</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm tracker-summary-card">
+                    <div class="tracker-summary-icon" style="color: var(--success-color); background-color: var(--bg-green-light);">
+                        <i class="fa-solid fa-circle-chevron-down"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted small d-block fw-semibold" data-translate="indicator_remain_cal">Remaining</span>
+                        <span class="fw-bold fs-5 text-dark" id="summaryRemainingCalories">2000 cal left</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm tracker-summary-card">
+                    <div class="tracker-summary-icon" style="color: var(--info-color); background-color: #ecfeff;">
+                        <i class="fa-solid fa-glass-water"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted small d-block fw-semibold" data-translate="indicator_water">Water Intake</span>
+                        <span class="fw-bold fs-5 text-dark" id="summaryWaterIntake">0 / 2000 ml</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-lg-3">
+                <div class="card border-0 shadow-sm tracker-summary-card">
+                    <div class="tracker-summary-icon" style="color: var(--warning-color); background-color: #fffbeb;">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <div>
+                        <span class="text-muted small d-block fw-semibold" data-translate="indicator_bmi">BMI Status</span>
+                        <span class="fw-bold fs-5 text-dark" id="summaryBmiStatus">Normal (22.5)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100 p-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="logo-icon bg-primary text-white me-3" style="width: 44px; height: 44px; font-size: 1.25rem;">
+                            <i class="fa-solid fa-droplet"></i>
+                        </div>
+                        <h4 class="card-title m-0" data-translate="card_water_title">Water Intake</h4>
+                    </div>
+                    <div class="circular-progress-container">
+                        <svg class="circular-progress-svg">
+                            <circle class="progress-bg" cx="110" cy="110" r="98"></circle>
+                            <circle class="progress-bar-fill" id="waterProgressRing" cx="110" cy="110" r="98"></circle>
+                        </svg>
+                        <div class="progress-center-text">
+                            <div class="display-5 fw-extrabold text-primary mb-1" id="waterCircleValue">0</div>
+                            <div class="text-muted small fw-semibold" id="waterCircleGoal">/ 2000 ml</div>
+                            <div class="text-muted fs-6 fw-bold mt-1" id="waterCirclePercent">0%</div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-center align-items-center gap-2 mt-2">
+                        <button class="btn-control fs-4 shadow-sm" id="btnWaterDec" title="Decrease 250ml">-</button>
+                        <button class="btn btn-secondary-custom shadow-sm py-2 px-3" id="btnWaterInc250" data-translate="btn_water_250">+250ml</button>
+                        <button class="btn btn-primary shadow-sm py-2 px-3" id="btnWaterInc500" data-translate="btn_water_500">+500ml</button>
+                        <button class="btn btn-danger-light shadow-sm py-2 px-3" id="btnWaterReset" data-translate="btn_reset">Reset</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100 p-4">
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="logo-icon bg-primary text-white me-3" style="width: 44px; height: 44px; font-size: 1.2rem;">
+                            <i class="fa-solid fa-utensils"></i>
+                        </div>
+                        <h4 class="card-title m-0" data-translate="card_food_title">Food Calories</h4>
+                    </div>
+                    <form id="foodForm" class="mb-4" novalidate>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <input type="text" class="form-control custom-input" id="foodName" placeholder="Meal name (e.g. Chicken Salad)" required>
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control custom-input" id="foodCalories" placeholder="Calories" required min="1">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control custom-input" id="foodProtein" placeholder="Protein (g)" min="0">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control custom-input" id="foodCarbs" placeholder="Carbs (g)" min="0">
+                            </div>
+                            <div class="col-6">
+                                <input type="number" class="form-control custom-input" id="foodFat" placeholder="Fat (g)" min="0">
+                            </div>
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn btn-primary w-100 py-3 fw-bold" id="btnAddMeal">
+                                    <i class="fa-solid fa-plus me-2"></i><span data-translate="btn_add_meal">Add Meal</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr class="opacity-10 my-4">
+                    <div id="mealListContainer" style="max-height: 240px; overflow-y: auto;">
+                        <div id="mealEmptyState" class="text-center py-5 text-muted opacity-75">
+                            <i class="fa-solid fa-utensils fs-1 mb-3 text-secondary"></i>
+                            <h6 class="fw-bold mb-1" data-translate="empty_meal_title">No meals added yet</h6>
+                            <p class="small m-0" data-translate="empty_meal_desc">Start tracking your food intake</p>
+                        </div>
+                        <div id="mealList"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
