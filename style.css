@@ -47,6 +47,17 @@ html[data-theme="dark"] .text-dark {
     color: var(--text-color) !important;
 }
 
+html[data-theme="dark"] h1,
+html[data-theme="dark"] h2,
+html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,
+html[data-theme="dark"] h5,
+html[data-theme="dark"] h6,
+html[data-theme="dark"] .fw-bold,
+html[data-theme="dark"] .card-title {
+    color: #ffffff !important;
+}
+
 html[data-theme="dark"] .text-muted,
 html[data-theme="dark"] .text-secondary,
 html[data-theme="dark"] .small,
