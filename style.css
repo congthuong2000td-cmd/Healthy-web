@@ -77,6 +77,18 @@ html[data-theme="dark"] .hero-banner .btn.btn-outline-light {
     color: #ffffff;
 }
 
+/* Make primary hero CTA (Get Started) filled in dark mode for clear contrast */
+html[data-theme="dark"] .hero-banner .btn.btn-light.text-primary {
+    background-color: var(--primary-color) !important;
+    color: #ffffff !important;
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 8px 24px rgba(59,130,246,0.22);
+}
+
+html[data-theme="dark"] .hero-banner .btn.btn-light.text-primary:hover {
+    filter: brightness(0.95);
+}
+
 /* CTA banner buttons (bottom) */
 html[data-theme="dark"] .cta-banner .btn.btn-light {
     background-color: rgba(255,255,255,0.06);
