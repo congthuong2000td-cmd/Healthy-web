@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthTrack | BMR/TDEE</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      /* ── 7-Day Calendar ── */
+      #weekCalendar { display:none; }
+      .week-goal-tabs .btn { border-radius:999px; font-size:.82rem; padding:.3rem .85rem; }
+      .day-card {
+        background:#fff;
+        border-radius:14px;
+        border:1.5px solid #e9effb;
+        transition:transform .25s, box-shadow .25s;
+        overflow:hidden;
+      }
+      .day-card:hover { transform:translateY(-4px); box-shadow:0 16px 40px rgba(13,110,253,.12); }
+      .day-card .day-header {
+        background:linear-gradient(135deg,#0d6efd 0%,#3b82f6 100%);
+        color:#fff; padding:.6rem 1rem;
+        display:flex; justify-content:space-between; align-items:center;
+      }
+      .day-card.goal-lose .day-header { background:linear-gradient(135deg,#16a34a,#4ade80); }
+      .day-card.goal-gain .day-header { background:linear-gradient(135deg,#dc2626,#f87171); }
+      .meal-row { display:flex; align-items:flex-start; gap:.65rem; padding:.6rem 1rem; border-bottom:1px solid #f1f5f9; }
+      .meal-row:last-child { border-bottom:none; }
+      .meal-icon { font-size:1.25rem; line-height:1; flex-shrink:0; margin-top:.05rem; }
+      .meal-name { font-size:.78rem; font-weight:700; color:#1e293b; margin-bottom:.1rem; }
+      .meal-desc { font-size:.72rem; color:#64748b; }
+      .meal-cal { margin-left:auto; font-size:.78rem; font-weight:700; color:#0d6efd; white-space:nowrap; }
+      .day-total-bar { height:5px; background:#e9effb; }
+      .day-total-bar-fill { height:100%; background:linear-gradient(90deg,#0d6efd,#60a5fa); transition:width .6s ease; }
+      .day-card.goal-lose .day-total-bar-fill { background:linear-gradient(90deg,#16a34a,#4ade80); }
+      .day-card.goal-gain .day-total-bar-fill { background:linear-gradient(90deg,#dc2626,#f87171); }
+      @keyframes slideUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+      .day-card.anim { animation:slideUp .4s ease both; }
+    </style>
+  </head>
+  <body data-page="tdee">
+    <header class="site-header sticky-top shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+        <div class="container">
+          <a class="navbar-brand fw-bold text-primary" href="index.html">
+            <span class="brand-mark">HT</span> HealthTrack
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Mở menu điều hướng"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Trang chủ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bmi.html">BMI</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bmr_tdee.html">BMR/TDEE</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="diet.html">Dinh dưỡng</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="workout.html">Tập luyện</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="watertracker.html">Nước</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="history.html">Lịch sử</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contact-faq.html">FAQ & Liên hệ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-5">
+      <div class="container">
+        <div class="page-title text-center mb-4">
+          <span class="eyebrow text-primary fw-semibold">BMR/TDEE</span>
+          <h1 class="fw-bold">Tính năng lượng cơ thể và duy trì</h1>
+          <p class="text-secondary">
+            Nhập thông tin cá nhân để xác định BMR, TDEE và kế hoạch calo phù
+            hợp.
+          </p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-6">
+            <div class="card shadow-sm border-0 p-4">
+              <form id="tdeeForm">
+                <div class="mb-3">
+                  <label for="age" class="form-label">Tuổi</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="age"
+                    min="1"
+                    max="100"
+                    placeholder="VD: 28"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="heightTdee" class="form-label"
+                    >Chiều cao (cm)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="heightTdee"
+                    min="100"
+                    max="250"
+                    placeholder="VD: 170"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="weightTdee" class="form-label"
+                    >Cân nặng hiện tại (kg)</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="weightTdee"
+                    min="30"
+                    max="200"
+                    placeholder="VD: 65"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="targetWeightTdee" class="form-label"
+                    >Cân nặng mục tiêu (kg) <span class="text-muted fw-normal" style="font-size:0.85em">(Tùy chọn)</span></label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="targetWeightTdee"
+                    min="30"
+                    max="200"
+                    placeholder="VD: 60"
+                  />
+                </div>
+                <div class="mb-4">
+                  <label class="form-label d-block">Giới tính</label>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="genderTdee"
+                      id="genderTdeeMale"
+                      value="Nam"
+                      checked
+                    />
+                    <label class="form-check-label" for="genderTdeeMale"
+                      >Nam</label
+                    >
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input
+                      class="form-check-input"
+                      type="radio"
+                      name="genderTdee"
+                      id="genderTdeeFemale"
+                      value="Nữ"
+                    />
+                    <label class="form-check-label" for="genderTdeeFemale"
+                      >Nữ</label
+                    >
+                  </div>
+                </div>
+                <div class="mb-4">
+                  <label for="activityLevel" class="form-label"
+                    >Mức độ hoạt động</label
+                  >
+                  <select class="form-select" id="activityLevel" required>
+                    <option value="1.2">Ít vận động</option>
+                    <option value="1.375">Nhẹ nhàng</option>
+                    <option value="1.55">Vừa phải</option>
+                    <option value="1.725">Năng động</option>
+                    <option value="1.9">Vận động viên</option>
+                  </select>
+                </div>
+                <div class="alert alert-danger d-none" id="tdeeAlert"></div>
+                <button type="submit" class="btn btn-primary w-100">
+                  Tính BMR/TDEE
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="card shadow-sm border-0 p-4 bg-white">
+              <h2 class="fw-bold mb-3">Kết quả năng lượng</h2>
+              <div id="tdeeResult" class="d-none">
+                <ul class="list-group list-group-flush mb-3 bmr-tdee-list">
+                  <li
+                    class="list-group-item px-0 d-flex justify-content-between align-items-center"
+                  >
+                    <span>BMR</span><strong id="bmrValue">0</strong>
+                  </li>
+                  <li
+                    class="list-group-item px-0 d-flex justify-content-between align-items-center"
+                  >
+                    <span>TDEE</span><strong id="tdeeValue">0</strong>
+                  </li>
+                  <li
+                    class="list-group-item px-0 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Duy trì</span><strong id="maintenanceValue">0</strong>
+                  </li>
+                  <li
+                    class="list-group-item px-0 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Giảm cân</span><strong id="lossValue">0</strong>
+                  </li>
+                  <li
+                    class="list-group-item px-0 d-flex justify-content-between align-items-center"
+                  >
+                    <span>Tăng cân</span><strong id="gainValue">0</strong>
+                  </li>
+                </ul>
+
+                <!-- So sánh Trước & Sau -->
+                <div id="targetResult" class="d-none mt-4 p-3 rounded-3" style="background-color: #f8faff; border: 1px solid #e9effb;">
+                  <h6 class="fw-bold mb-3 text-primary" style="font-size: 0.95rem;">⚖️ Lộ trình Đạt Mục Tiêu</h6>
+                  <div class="row text-center mb-2 g-0">
+                    <div class="col-6 border-end border-light">
+                      <p class="text-muted small mb-1">Hiện tại</p>
+                      <h5 class="fw-bold mb-0" id="currentWeightDisplay">0 kg</h5>
+                    </div>
+                    <div class="col-6">
+                      <p class="text-muted small mb-1">Mục tiêu</p>
+                      <h5 class="fw-bold mb-0" id="targetWeightDisplay">0 kg</h5>
+                    </div>
+                  </div>
+                  <hr class="my-2" style="border-color: #d1dfec;">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="text-secondary small">Cần thay đổi:</span>
+                    <strong id="weightDiffDisplay">0 kg</strong>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="text-secondary small">Calo mục tiêu/ngày:</span>
+                    <strong id="targetCalDisplay" class="text-primary">0 kcal</strong>
+                  </div>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-secondary small">Thời gian dự kiến:</span>
+                    <strong id="estimatedTimeDisplay" style="color: #d97706;">0 tuần</strong>
+                  </div>
+                </div>
+
+              </div>
+              <div id="tdeeEmpty" class="text-secondary">
+                Nhập dữ liệu và nhấn "Tính BMR/TDEE" để xem kết quả.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 7-Day Calorie Plan ── -->
+      <section id="weekCalendar" class="mt-5 pt-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+          <div>
+            <h2 class="fw-bold mb-0">📅 Lịch Calo 7 Ngày</h2>
+            <p class="text-secondary small mb-0" id="calPlanSubtitle">Kế hoạch ăn uống dựa trên TDEE của bạn</p>
+          </div>
+          <!-- Goal tabs -->
+          <div class="week-goal-tabs d-flex gap-2" role="group">
+            <button class="btn btn-primary btn-sm active-goal" id="tabMaintain" onclick="switchGoal('maintain')">⚖️ Duy trì</button>
+            <button class="btn btn-outline-success btn-sm" id="tabLose" onclick="switchGoal('lose')">📉 Giảm cân</button>
+            <button class="btn btn-outline-danger btn-sm" id="tabGain" onclick="switchGoal('gain')">📈 Tăng cân</button>
+          </div>
+        </div>
+        <div class="row g-3" id="weekGrid"></div>
+      </section>
+    </div>
+    </main>
+
+    <footer class="site-footer py-4 bg-white border-top">
+      <div class="container text-center">
+        <p class="mb-1">
+          Email liên hệ:
+          <a href="mailto:hello@healthtrack.vn">hello@healthtrack.vn</a>
+        </p>
+        <div class="social-links mb-2">
+          <a href="#" class="me-3 text-decoration-none">Facebook</a>
+          <a href="#" class="text-decoration-none">X (Twitter)</a>
+        </div>
+        <p class="text-muted mb-0">
+          © 2026 HealthTrack. Tất cả quyền được bảo lưu.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+    // ── 7-Day Calorie Plan Logic ──
+    const DAYS = ['Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy','Chủ Nhật'];
+    const DATES = (() => {
+      const d = new Date(), out = [];
+      // find Monday of current week
+      const day = d.getDay() === 0 ? 6 : d.getDay() - 1;
+      d.setDate(d.getDate() - day);
+      for(let i=0;i<7;i++){
+        const nd = new Date(d); nd.setDate(d.getDate()+i);
+        out.push(nd.getDate()+'/'+(nd.getMonth()+1));
+      }
+      return out;
+    })();
+
+    // Meal pool – breakfast / lunch / dinner separately
+    const MEALS = {
+      breakfast: [
+        {name:'Cháo yến mạch', desc:'Yến mạch + chuối + mật ong', pct:.20, icon:'🥣'},
+        {name:'Trứng ốp la + bánh mì', desc:'2 trứng, 2 lát bánh mì nguyên cám', pct:.22, icon:'🍳'},
+        {name:'Sinh tố protein', desc:'Chuối, sữa chua, whey protein', pct:.18, icon:'🥤'},
+        {name:'Bánh mì trứng avocado', desc:'Bơ + trứng luộc + bánh mì đen', pct:.21, icon:'🥑'},
+        {name:'Phở gà', desc:'Phở gà ít nước béo + rau thơm', pct:.24, icon:'🍜'},
+        {name:'Sữa hạt + granola', desc:'Sữa hạnh nhân + granola + việt quất', pct:.19, icon:'🌾'},
+        {name:'Cơm trắng + cá kho', desc:'Cơm + cá kho tộ + rau muống', pct:.25, icon:'🍚'},
+      ],
+      lunch: [
+        {name:'Cơm gà nướng', desc:'Ức gà nướng + cơm gạo lứt + salad', pct:.35, icon:'🍗'},
+        {name:'Bún bò Huế', desc:'Bún bò ít béo + rau sống', pct:.33, icon:'🍲'},
+        {name:'Salad gà quinoa', desc:'Gà luộc + quinoa + rau xanh + dầu ô liu', pct:.30, icon:'🥗'},
+        {name:'Cơm sườn + canh', desc:'Sườn kho + cơm + canh rau củ', pct:.36, icon:'🍱'},
+        {name:'Mì xào hải sản', desc:'Mì trứng + tôm + mực + rau củ', pct:.32, icon:'🍝'},
+        {name:'Cơm đậu phụ', desc:'Đậu phụ sốt cà chua + cơm + súp lơ', pct:.28, icon:'🫘'},
+        {name:'Bún chả', desc:'Chả nướng + bún + rau sống + nước mắm', pct:.34, icon:'🥩'},
+      ],
+      dinner: [
+        {name:'Cá hồi áp chảo', desc:'Cá hồi + khoai lang hấp + rau cải', pct:.30, icon:'🐟'},
+        {name:'Gà luộc rau củ', desc:'Ức gà luộc + bông cải xanh + cà rốt', pct:.28, icon:'🥦'},
+        {name:'Súp đậu lăng', desc:'Đậu lăng + cà rốt + hành tây + gia vị', pct:.25, icon:'🍵'},
+        {name:'Tôm rang muối', desc:'Tôm + tỏi + rau muống + cơm gạo lứt', pct:.30, icon:'🦐'},
+        {name:'Đậu phụ hấp', desc:'Đậu phụ non + nấm + dầu hào + gừng', pct:.22, icon:'🧄'},
+        {name:'Bò xào rau', desc:'Thịt bò + bông cải xanh + ớt chuông', pct:.32, icon:'🥩'},
+        {name:'Canh chua cá', desc:'Cá lóc + me + cà chua + giá đỗ', pct:.26, icon:'🍅'},
+      ],
+    };
+
+    let currentGoal = 'maintain';
+    let currentTdee = 0;
+
+    function switchGoal(goal) {
+      currentGoal = goal;
+      ['maintain','lose','gain'].forEach(g => {
+        const btn = document.getElementById('tab'+g.charAt(0).toUpperCase()+g.slice(1));
+        if(btn){
+          btn.className = g===goal
+            ? (g==='lose'?'btn btn-success btn-sm active-goal':g==='gain'?'btn btn-danger btn-sm active-goal':'btn btn-primary btn-sm active-goal')
+            : (g==='lose'?'btn btn-outline-success btn-sm':g==='gain'?'btn btn-outline-danger btn-sm':'btn btn-outline-primary btn-sm');
+        }
+      });
+      renderWeek(currentTdee);
+    }
+
+    function goalCalories(tdee) {
+      if(currentGoal==='lose') return tdee - 500;
+      if(currentGoal==='gain') return tdee + 500;
+      return tdee;
+    }
+
+    function renderWeek(tdee) {
+      const grid = document.getElementById('weekGrid');
+      if(!grid || tdee<=0) return;
+      const target = goalCalories(tdee);
+      const sub = document.getElementById('calPlanSubtitle');
+      const goalLabel = currentGoal==='lose'?'Giảm cân (-500 kcal)':currentGoal==='gain'?'Tăng cân (+500 kcal)':'Duy trì cân nặng';
+      if(sub) sub.textContent = `Mục tiêu: ${goalLabel} — ${target} kcal/ngày`;
+
+      grid.innerHTML = DAYS.map((day, i) => {
+        const br = MEALS.breakfast[i];
+        const lu = MEALS.lunch[i];
+        const di = MEALS.dinner[i];
+        const brCal = Math.round(target * br.pct);
+        const luCal = Math.round(target * lu.pct);
+        const diCal = Math.round(target * di.pct);
+        const snackCal = target - brCal - luCal - diCal;
+        const totalPct = Math.min(100, Math.round((brCal+luCal+diCal+snackCal)/target*100));
+        const goalClass = currentGoal==='lose'?'goal-lose':currentGoal==='gain'?'goal-gain':'';
+        const today = new Date();
+        const weekDay = today.getDay()===0?6:today.getDay()-1;
+        const isToday = i===weekDay;
+        return `<div class="col-md-6 col-xl-3">
+          <div class="day-card ${goalClass} anim" style="animation-delay:${i*60}ms">
+            <div class="day-header">
+              <div>
+                <div class="fw-bold" style="font-size:.9rem">${day}</div>
+                <div style="font-size:.75rem;opacity:.85">${DATES[i]}${isToday?' 📍 Hôm nay':''}</div>
+              </div>
+              <div class="text-end">
+                <div class="fw-bold" style="font-size:1.05rem">${target}</div>
+                <div style="font-size:.7rem;opacity:.8">kcal</div>
+              </div>
+            </div>
+            <div class="day-total-bar"><div class="day-total-bar-fill" style="width:${totalPct}%"></div></div>
+            <div class="meal-row">
+              <span class="meal-icon">${br.icon}</span>
+              <div><div class="meal-name">${br.name}</div><div class="meal-desc">${br.desc}</div></div>
+              <span class="meal-cal">${brCal} kcal</span>
+            </div>
+            <div class="meal-row">
+              <span class="meal-icon">${lu.icon}</span>
+              <div><div class="meal-name">${lu.name}</div><div class="meal-desc">${lu.desc}</div></div>
+              <span class="meal-cal">${luCal} kcal</span>
+            </div>
+            <div class="meal-row">
+              <span class="meal-icon">${di.icon}</span>
+              <div><div class="meal-name">${di.name}</div><div class="meal-desc">${di.desc}</div></div>
+              <span class="meal-cal">${diCal} kcal</span>
+            </div>
+            <div class="meal-row" style="background:#f8faff">
+              <span class="meal-icon">🍎</span>
+              <div><div class="meal-name">Bữa phụ</div><div class="meal-desc">Trái cây, hạt, sữa chua</div></div>
+              <span class="meal-cal">${snackCal>0?snackCal:0} kcal</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    // Hook into TDEE form submit
+    const tdeeForm = document.getElementById('tdeeForm');
+    if(tdeeForm) {
+      tdeeForm.addEventListener('submit', function() {
+        setTimeout(function() {
+          const el = document.getElementById('tdeeValue');
+          if(!el) return;
+          const tdee = parseInt(el.textContent);
+          if(isNaN(tdee)||tdee<=0) return;
+          currentTdee = tdee;
+
+          const currentWeight = parseFloat(document.getElementById('weightTdee').value);
+          const targetWeight = parseFloat(document.getElementById('targetWeightTdee').value);
+          
+          if(!isNaN(targetWeight) && targetWeight > 0 && targetWeight !== currentWeight) {
+             const diff = targetWeight - currentWeight;
+             const isLose = diff < 0;
+             const absDiff = Math.abs(diff);
+             
+             document.getElementById('currentWeightDisplay').textContent = currentWeight + ' kg';
+             document.getElementById('targetWeightDisplay').textContent = targetWeight + ' kg';
+             
+             const diffText = (isLose ? 'Giảm ' : 'Tăng ') + absDiff.toFixed(1) + ' kg';
+             document.getElementById('weightDiffDisplay').textContent = diffText;
+             document.getElementById('weightDiffDisplay').className = isLose ? 'text-success fw-bold' : 'text-danger fw-bold';
+             
+             const dailyCal = isLose ? tdee - 500 : tdee + 500;
+             document.getElementById('targetCalDisplay').textContent = dailyCal + ' kcal';
+             
+             // 1kg fat = 7700 kcal. 500 kcal/day deficit/surplus = 3500 kcal/week = ~0.45kg/week
+             const weeks = Math.ceil(absDiff / 0.45);
+             const months = Math.floor(weeks / 4);
+             const remainingWeeks = weeks % 4;
+             
+             let timeText = '';
+             if(months > 0) timeText += months + ' tháng ';
+             if(remainingWeeks > 0 || months === 0) timeText += remainingWeeks + ' tuần';
+             
+             document.getElementById('estimatedTimeDisplay').textContent = '~ ' + timeText.trim();
+             
+             document.getElementById('targetResult').classList.remove('d-none');
+             switchGoal(isLose ? 'lose' : 'gain');
+          } else {
+             document.getElementById('targetResult').classList.add('d-none');
+             switchGoal('maintain');
+          }
+
+          document.getElementById('weekCalendar').style.display = 'block';
+          document.getElementById('weekCalendar').scrollIntoView({behavior:'smooth', block:'start'});
+        }, 120);
+      });
+    }
+    </script>
+  </body>
+</html>

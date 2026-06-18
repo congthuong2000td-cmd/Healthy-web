@@ -1,0 +1,126 @@
+﻿<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthTrack | Kế hoạch dinh dưỡng</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="diet">
+    <header class="site-header sticky-top shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+        <div class="container">
+          <a class="navbar-brand fw-bold text-primary" href="index.html">
+            <span class="brand-mark">HT</span> HealthTrack
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Mở menu điều hướng"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Trang chủ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bmi.html">BMI</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bmr_tdee.html">BMR/TDEE</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="diet.html">Dinh dưỡng</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="workout.html">Tập luyện</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="watertracker.html">Nước</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="history.html">Lịch sử</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contact-faq.html">FAQ & Liên hệ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="py-5">
+      <div class="container">
+        <div class="page-title text-center mb-4">
+          <span class="eyebrow text-primary fw-semibold">Dinh dưỡng</span>
+          <h1 class="fw-bold">Lập kế hoạch ăn uống theo mục tiêu</h1>
+          <p class="text-secondary">
+            Chọn mục tiêu và loại thực đơn phù hợp với chỉ số BMI hoặc TDEE của
+            bạn.
+          </p>
+        </div>
+
+        <div class="card shadow-sm border-0 p-4 mb-4">
+          <div class="row gy-3">
+            <div class="col-md-6">
+              <label class="form-label">Mục tiêu</label>
+              <select class="form-select" id="dietGoal">
+                <option value="Giảm cân">Giảm cân</option>
+                <option value="Tăng cơ">Tăng cơ</option>
+                <option value="Giữ dáng">Giữ dáng</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Loại ăn</label>
+              <select class="form-select" id="dietType">
+                <option value="Ăn kiêng truyền thống">
+                  Ăn kiêng truyền thống
+                </option>
+                <option value="Keto">Keto</option>
+                <option value="Thuần chay">Thuần chay</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="dietMessage" class="alert alert-warning text-center">
+          Đang tải dữ liệu... Vui lòng kiểm tra đã tính BMI hoặc BMR/TDEE.
+        </div>
+
+        <div id="dietCards" class="row g-4"></div>
+      </div>
+    </main>
+
+    <footer class="site-footer py-4 bg-white border-top">
+      <div class="container text-center">
+        <p class="mb-1">
+          Email liên hệ:
+          <a href="mailto:hello@healthtrack.vn">hello@healthtrack.vn</a>
+        </p>
+        <div class="social-links mb-2">
+          <a href="#" class="me-3 text-decoration-none">Facebook</a>
+          <a href="#" class="text-decoration-none">X (Twitter)</a>
+        </div>
+        <p class="text-muted mb-0">
+          © 2026 HealthTrack. Tất cả quyền được bảo lưu.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

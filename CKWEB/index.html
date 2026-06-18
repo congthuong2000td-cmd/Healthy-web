@@ -1,0 +1,241 @@
+﻿<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthTrack | Trang chủ</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body data-page="home">
+    <header class="site-header sticky-top shadow-sm">
+      <nav class="navbar navbar-expand-lg navbar-light bg-white py-3">
+        <div class="container">
+          <a class="navbar-brand fw-bold text-primary" href="index.html">
+            <span class="brand-mark">HT</span> HealthTrack
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar"
+            aria-expanded="false"
+            aria-label="Mở menu điều hướng"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="mainNavbar">
+            <ul class="navbar-nav ms-auto align-items-center">
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Trang chủ</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bmi.html">BMI</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="bmr_tdee.html">BMR/TDEE</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="diet.html">Dinh dưỡng</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="workout.html">Tập luyện</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="watertracker.html">Nước</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="history.html">Lịch sử</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="contact-faq.html">FAQ & Liên hệ</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero-section py-5 overflow-hidden">
+        <div class="container">
+          <div class="row align-items-center gy-4">
+            <div class="col-lg-6">
+              <span class="eyebrow text-primary fw-semibold"
+                >Chào mừng đến HealthTrack</span
+              >
+              <h1 class="display-5 fw-bold mb-3">
+                Một nền tảng sức khỏe toàn diện cho hành trình của bạn
+              </h1>
+              <p class="lead text-secondary mb-4">
+                Theo dõi chỉ số cơ thể, tính toán năng lượng, lập kế hoạch dinh
+                dưỡng và luyện tập với giao diện hiện đại, dễ sử dụng và hoàn
+                toàn bằng tiếng Việt.
+              </p>
+              <a href="#features" class="btn btn-primary btn-lg me-2"
+                >Khám phá ngay</a
+              >
+              <a href="bmi.html" class="btn btn-outline-primary btn-lg"
+                >Bắt đầu tính BMI</a
+              >
+            </div>
+            <div class="col-lg-6 text-center">
+              <div class="hero-card p-4 rounded-4 shadow-lg bg-white">
+                <img
+                  src="assets/images/fitness.webp"
+                  alt="Fitness"
+                  class="img-fluid rounded-4 hero-image"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="features-section py-5 bg-light">
+        <div class="container">
+          <div class="section-header text-center mb-5">
+            <h2 class="fw-bold">Các công cụ chính</h2>
+            <p class="text-secondary">
+              Chọn công cụ phù hợp với mục tiêu sức khỏe của bạn và bắt đầu hành
+              trình chăm sóc bản thân.
+            </p>
+          </div>
+          <div class="row g-4">
+            <div class="col-md-6 col-xl-3">
+              <article class="card feature-card h-100 shadow-sm border-0">
+                <div class="card-body">
+                  <h5 class="card-title">BMI Tracker</h5>
+                  <p class="card-text text-muted">
+                    Tính chỉ số BMI và xác định tình trạng cơ thể.
+                  </p>
+                  <a
+                    href="bmi.html"
+                    class="btn btn-sm btn-outline-primary rounded-pill mt-3"
+                    >Xem chi tiết</a
+                  >
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="card feature-card h-100 shadow-sm border-0">
+                <div class="card-body">
+                  <h5 class="card-title">BMR/TDEE</h5>
+                  <p class="card-text text-muted">
+                    Tính nhu cầu năng lượng hàng ngày và kế hoạch duy trì.
+                  </p>
+                  <a
+                    href="bmr_tdee.html"
+                    class="btn btn-sm btn-outline-primary rounded-pill mt-3"
+                    >Xem chi tiết</a
+                  >
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="card feature-card h-100 shadow-sm border-0">
+                <div class="card-body">
+                  <h5 class="card-title">Kế hoạch dinh dưỡng</h5>
+                  <p class="card-text text-muted">
+                    Lọc thực đơn theo mục tiêu và kiểu ăn.
+                  </p>
+                  <a
+                    href="diet.html"
+                    class="btn btn-sm btn-outline-primary rounded-pill mt-3"
+                    >Xem chi tiết</a
+                  >
+                </div>
+              </article>
+            </div>
+            <div class="col-md-6 col-xl-3">
+              <article class="card feature-card h-100 shadow-sm border-0">
+                <div class="card-body">
+                  <h5 class="card-title">Tracker nước</h5>
+                  <p class="card-text text-muted">
+                    Theo dõi lượng nước uống mỗi ngày với mục tiêu 2000ml.
+                  </p>
+                  <a
+                    href="watertracker.html"
+                    class="btn btn-sm btn-outline-primary rounded-pill mt-3"
+                    >Xem chi tiết</a
+                  >
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-section py-5">
+        <div class="container">
+          <div class="row g-4 text-center">
+            <div class="col-md-4">
+              <div class="stat-card p-4 rounded-4 shadow-sm bg-white">
+                <h3 class="display-6 text-primary counter" data-target="2800">
+                  0
+                </h3>
+                <p class="mb-0 text-secondary">Người dùng HealthTrack</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card p-4 rounded-4 shadow-sm bg-white">
+                <h3 class="display-6 text-primary counter" data-target="95">
+                  0
+                </h3>
+                <p class="mb-0 text-secondary">Hài lòng với công cụ</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="stat-card p-4 rounded-4 shadow-sm bg-white">
+                <h3 class="display-6 text-primary counter" data-target="12">
+                  0
+                </h3>
+                <p class="mb-0 text-secondary">Công cụ chăm sóc sức khỏe</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section py-5 bg-primary text-white text-center">
+        <div class="container">
+          <h2 class="fw-bold mb-3">
+            Sẵn sàng kiến tạo thói quen chăm sóc sức khỏe?
+          </h2>
+          <p class="mb-4">
+            Chỉ với vài bước đơn giản, bạn có thể theo dõi tiến trình và đạt mục
+            tiêu khỏe đẹp.
+          </p>
+          <a href="history.html" class="btn btn-light btn-lg"
+            >Xem lịch sử sức khỏe</a
+          >
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer py-4 bg-white border-top">
+      <div class="container text-center">
+        <p class="mb-1">
+          Email liên hệ:
+          <a href="mailto:hello@healthtrack.vn">hello@healthtrack.vn</a>
+        </p>
+        <div class="social-links mb-2">
+          <a href="#" class="me-3 text-decoration-none">Facebook</a>
+          <a href="#" class="text-decoration-none">X (Twitter)</a>
+        </div>
+        <p class="text-muted mb-0">
+          © 2026 HealthTrack. Tất cả quyền được bảo lưu.
+        </p>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
